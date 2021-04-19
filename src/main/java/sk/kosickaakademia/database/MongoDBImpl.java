@@ -2,6 +2,7 @@ package sk.kosickaakademia.database;
 
 import com.google.gson.JsonObject;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
@@ -40,7 +41,14 @@ public class MongoDBImpl implements MongoDB {
     }
 
     @Override
-    public List<Task> getAllTasks() {
+    public FindIterable<Document> getAllTasks() {
+        try {
+            getConnection();
+
+            return mongoColl.find();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
