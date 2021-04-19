@@ -1,0 +1,62 @@
+package sk.kosickaakademia.database;
+
+import com.google.gson.JsonObject;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+import sk.kosickaakademia.document.Task;
+
+import java.util.List;
+
+public class MongoDBImpl implements MongoDB {
+    private MongoClient mongoClient;
+    private MongoDatabase mongoDbs;
+    private MongoCollection<Document> mongoColl;
+
+    private void getConnection() throws Exception{
+        mongoClient = new MongoClient();
+        mongoDbs = mongoClient.getDatabase("taskOrganiser");
+        mongoColl = mongoDbs.getCollection("task");
+    }
+
+    @Override
+    public void insertTask(JsonObject jsonObject) {
+
+    }
+
+    @Override
+    public void completeTask(int id) {
+
+    }
+
+    @Override
+    public List<Task> getAllTasks() {
+        return null;
+    }
+
+    @Override
+    public List<Task> getAllTasks(boolean completed) {
+        return null;
+    }
+
+    @Override
+    public List<Task> getTaskByName(String name) {
+        return null;
+    }
+
+    @Override
+    public List<Task> getTasksByPriority(int priority) {
+        return null;
+    }
+
+    @Override
+    public List<Task> getAllTasksByPriority() {
+        return null;
+    }
+
+    @Override
+    public List<Task> getTasksByTimeEst() {
+        return null;
+    }
+}

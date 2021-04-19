@@ -1,12 +1,13 @@
 package sk.kosickaakademia.database;
 
+import com.google.gson.JsonObject;
 
 import sk.kosickaakademia.document.Task;
 
 import java.util.List;
 
 public interface MongoDB {
-    public void insertTask(Task task);
+    public void insertTask(JsonObject jsonObject);
 
     public void completeTask(int id);
 
