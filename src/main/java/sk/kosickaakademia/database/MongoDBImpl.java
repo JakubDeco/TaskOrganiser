@@ -9,6 +9,8 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Updates.*;
 
 
 public class MongoDBImpl implements MongoDB {
@@ -44,9 +46,9 @@ public class MongoDBImpl implements MongoDB {
         try {
             getConnection();
 
-            UpdateResult result = mongoColl.updateOne(new BasicDBObject("id", id), new BasicDBObject("done", true));
+            UpdateResult result = mongoColl.updateOne(eq("_id",id), combine(set("done",true)));
 
-            return result.getMatchedCount() == result.getModifiedCount();
+            return result.getModifiedCount() == 1;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
