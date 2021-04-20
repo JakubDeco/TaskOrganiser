@@ -1,14 +1,13 @@
 package sk.kosickaakademia.database;
 
 import com.google.gson.JsonObject;
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import sk.kosickaakademia.document.Task;
 
-import java.util.List;
 
 public class MongoDBImpl implements MongoDB {
     private MongoClient mongoClient;
@@ -53,27 +52,81 @@ public class MongoDBImpl implements MongoDB {
     }
 
     @Override
-    public List<Task> getAllTasks(boolean completed) {
+    public FindIterable<Document> getAllTasks(boolean completed) {
+        try {
+            getConnection();
+
+            BasicDBObject query = new BasicDBObject();
+            query.put("done", completed);
+
+            return mongoColl.find(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
-    public List<Task> getTaskByName(String name) {
+    public FindIterable<Document> getTaskByName(String name) {
+        if(name == null)
+            return null;
+
+        try {
+            getConnection();
+
+            BasicDBObject query = new BasicDBObject();
+            query.put("name", name);
+
+            return mongoColl.find(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
-    public List<Task> getTasksByPriority(int priority) {
+    public FindIterable<Document> getTasksByPriority(int priority) {
+        if (priority < 1 || priority > 3)
+            return null;
+
+        try {
+            getConnection();
+
+            BasicDBObject query = new BasicDBObject();
+            query.put("priority", priority);
+
+            return mongoColl.find(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
-    public List<Task> getAllTasksByPriority() {
+    public FindIterable<Document> getAllTasksByPriority() {
+        try {
+            getConnection();
+
+            BasicDBObject query = new BasicDBObject("priority",1);
+
+            return mongoColl.find().sort(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
-    public List<Task> getTasksByTimeEst() {
+    public FindIterable<Document> getTasksByTimeEst() {
+        try {
+            getConnection();
+
+            BasicDBObject query = new BasicDBObject("timeEst",1);
+
+            return mongoColl.find().sort(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

@@ -4,9 +4,7 @@ import com.google.gson.JsonObject;
 
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
-import sk.kosickaakademia.document.Task;
 
-import java.util.List;
 
 public interface MongoDB {
     public void insertTask(JsonObject jsonObject);
@@ -15,13 +13,13 @@ public interface MongoDB {
 
     public FindIterable<Document> getAllTasks();
 
-    public List<Task> getAllTasks(boolean completed);
+    public FindIterable<Document> getAllTasks(boolean completed);
 
-    public List<Task> getTaskByName(String name);
+    public FindIterable<Document> getTaskByName(String name);
 
-    public List<Task> getTasksByPriority(int priority);
+    public FindIterable<Document> getTasksByPriority(int priority);
 
-    public List<Task> getAllTasksByPriority();
+    public FindIterable<Document> getAllTasksByPriority();
 
-    public List<Task> getTasksByTimeEst();
+    public FindIterable<Document> getTasksByTimeEst();
 }
