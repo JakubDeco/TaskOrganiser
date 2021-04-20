@@ -72,10 +72,7 @@ public class MongoDBImpl implements MongoDB {
         try {
             getConnection();
 
-            BasicDBObject query = new BasicDBObject();
-            query.put("done", completed);
-
-            return mongoColl.find(query);
+            return mongoColl.find(eq("done",completed));
         } catch (Exception e) {
             e.printStackTrace();
         }
