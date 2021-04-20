@@ -6,7 +6,9 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 
 public class MongoDBImpl implements MongoDB {
@@ -35,8 +37,20 @@ public class MongoDBImpl implements MongoDB {
     }
 
     @Override
-    public void completeTask(int id) {
+    public boolean completeTask(ObjectId id) {
+        if (id == null)
+            return false;
 
+        try {
+            getConnection();
+
+            UpdateResult result = mongoColl.updateOne(new BasicDBObject("id", id), new BasicDBObject("done", true));
+
+            return result.getMatchedCount() == result.getModifiedCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override

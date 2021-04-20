@@ -4,12 +4,13 @@ import com.google.gson.JsonObject;
 
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 
 public interface MongoDB {
     public void insertTask(JsonObject jsonObject);
 
-    public void completeTask(int id);
+    public boolean completeTask(ObjectId id);
 
     public FindIterable<Document> getAllTasks();
 
