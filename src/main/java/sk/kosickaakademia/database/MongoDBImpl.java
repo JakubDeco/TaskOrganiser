@@ -6,6 +6,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -87,10 +88,7 @@ public class MongoDBImpl implements MongoDB {
         try {
             getConnection();
 
-            BasicDBObject query = new BasicDBObject();
-            query.put("name", name);
-
-            return mongoColl.find(query);
+            return mongoColl.find(eq("name",name));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,10 +103,7 @@ public class MongoDBImpl implements MongoDB {
         try {
             getConnection();
 
-            BasicDBObject query = new BasicDBObject();
-            query.put("priority", priority);
-
-            return mongoColl.find(query);
+            return mongoColl.find(eq("priority",priority));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,9 +115,7 @@ public class MongoDBImpl implements MongoDB {
         try {
             getConnection();
 
-            BasicDBObject query = new BasicDBObject("priority",1);
-
-            return mongoColl.find().sort(query);
+            return mongoColl.find().sort(Sorts.ascending("priority"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -134,9 +127,7 @@ public class MongoDBImpl implements MongoDB {
         try {
             getConnection();
 
-            BasicDBObject query = new BasicDBObject("timeEst",1);
-
-            return mongoColl.find().sort(query);
+            return mongoColl.find().sort(Sorts.ascending("timeEstimate"));
         } catch (Exception e) {
             e.printStackTrace();
         }
