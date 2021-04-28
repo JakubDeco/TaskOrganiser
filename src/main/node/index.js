@@ -128,6 +128,39 @@ app.patch('/task/done', (req, res) => {
 
 })
 
+app.get('/task/name', (req, res) => {
+
+    const name = req.query.name
+
+    if (name != undefined) {
+        
+        client.connect((error) => {
+
+            if (error) {
+
+                res.status(500).send({ error: "Internal server error." })
+                console.log("Connection failed")
+
+            } else {
+
+                console.log('connection sucessfull')
+                client.db(dbsName).collection('task').find({ name: name }).toArray((err, result) => {
+                    if (err) {
+                        console.log(err)
+                        res.status(500).send({ error: "Internal server error." })
+                    } else {
+                        res.status(200).send(result);
+                    } 
+                })
+            }
+
+        })
+    } else {
+        res.status(400).send({ error: "name parameter required" })
+    }
+})
+
+
 app.get('/about', (req, res) => {
     res.send('<h1>About</h1>')
 })
