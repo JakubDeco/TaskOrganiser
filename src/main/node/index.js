@@ -1,5 +1,6 @@
 const express = require('express')
 const { MongoClient } = require('mongodb')
+const url = require('url')
 
 const connectionToURL = 'mongodb://localhost:27017'
 const dbsName = 'taskOrganiser'
@@ -14,6 +15,8 @@ app.use(express.urlencoded({
     extended: true
 }))
 app.use(express.json())
+
+
 
 app.get('/task', (req, res) => {
     client.connect((error) => {
@@ -62,30 +65,65 @@ app.post('/task/new', (req, res) => {
     // console.log(new Date().toISOString())
     if (typeof (body.name === "string")
         && typeof (body.timeEstimate === "number")
-        && typeof (body.priority === "number") 
+        && typeof (body.priority === "number")
         && body.priority < 4
         && body.priority > 0
         && body.priority % 1 === 0
         && body.timeEstimate > 0) {
-            //console.log('am here')
-            const newTask = {
-                'name': body.name, 
-                'priority': body.priority,
-                'timeEstimate': body.timeEstimate,
-                'done': false,
-                'date': new Date().toISOString(),
-            };
-            client.connect((error) => {
-                if (error) {
-                    return console.log("Connection failed")
-                }else{
-                    console.log('connection sucessfull')
-                    client.db(dbsName).collection('task').insertOne(newTask)
-                    res.send(newTask)
-                }
-            })
-    }else {
-        res.send({'error': 'Incorrect request body.'})
+        //console.log('am here')
+        const newTask = {
+            'name': body.name,
+            'priority': body.priority,
+            'timeEstimate': body.timeEstimate,
+            'done': false,
+            'date': new Date().toISOString(),
+        };
+        client.connect((error) => {
+            if (error) {
+                return console.log("Connection failed")
+            } else {
+                console.log('connection sucessfull')
+                client.db(dbsName).collection('task').insertOne(newTask)
+                res.send(newTask)
+            }
+        })
+    } else {
+        res.send({ 'error': 'Incorrect request body.' })
+    }
+
+})
+
+app.patch('/task/done', (req, res) => {
+    const id = req.query._id
+    if (id != undefined) {
+        // console.log(filter._id)
+        // console.log(filter)
+        client.connect((error) => {
+            if (error) {
+                console.log("Connection failed")
+                return res.status(500).send({ "error": "internal server error" })
+            } else {
+                console.log('connection sucessfull')
+
+                const filter = { _id: id }
+                const update = { "$set": { "done": true } }
+                //const options = { returnNewDocument: true }
+
+                client.db(dbsName).collection('task').findOneAndUpdate(filter, update, (err, result) => {
+                    if (err) {
+                        res.status(400).send({ "error": "Task can not be changed." })
+                    } else if (result.matchedCount == 0) {
+                        console.log(result)
+                        res.status(404).send({ "info": "Task not found." })
+                    } else {
+                        console.log(result)
+                        res.status(200).send({ "ok": "Task was set as completed." })
+                    }
+                })
+            }
+        })
+    } else {
+        res.status(400).send({ "error": "_id parameter required" })
     }
 
 })
