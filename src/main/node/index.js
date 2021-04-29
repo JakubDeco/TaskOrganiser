@@ -1,3 +1,4 @@
+const { response } = require('express')
 const express = require('express')
 const mongodb = require('mongodb')
 const { MongoClient } = require('mongodb')
@@ -28,39 +29,39 @@ app.use(function (req,res,next){
 
 
 app.get('/task', (req, res) => {
+
+    res.setHeader('Access-Control-Allow-Origin','*');
+
     client.connect((error) => {
         if (error) {
             return console.log("Connection failed")
         }
         console.log('connection sucessfull')
 
-        //console.log(filter)
-        // if(qDone !== undefined && !qPriority){
-        //     //console.log(req.query.done)
-        //     filter = {done: qDone}
-        // }
-        // if(qDone !== undefined && qPriority){
-        //     //console.log(req.query.done)
-        //     filter = {done: qDone, priority: qPriority}
-        // }
-        client.db(dbsName).collection('task').find(() => {
-            let filter = {}
-            const qDone = req.query.done == true ? true : req.query.done == false ? false : undefined
-            const qPriority =
-                typeof (req.query.prioriry) === "number"
-                    && req.query.priority < 4
-                    && req.query.priority > 0
-                    && req.query.priority % 1 === 0 ? req.query.priority : undefined
+        let filter = {}
+        const qDone = req.query.done == true ? true : req.query.done == false ? false : undefined
+        const qPriority =
+            typeof (req.query.prioriry) === "number"
+                && req.query.priority < 4
+                && req.query.priority > 0
+                && req.query.priority % 1 === 0 ? req.query.priority : undefined
 
-
+        if (qDone !== undefined || qPriority !== undefined){
             if (qDone !== undefined) filter.done = qDone
             if (qPriority !== undefined) filter.priority = qPriority
-
-            return { ...filter };
-        }).toArray((error, result) => {
-            console.log(result);
-            res.send(result);
-        });
+        }  
+        try {
+            client.db(dbsName).collection('task').find(filter).toArray((error, result) => {
+                if (error) throw error
+                res.status(200).send(result);
+            });
+            
+        } catch (error) {
+            res.status(500).send({"errror": "Internal server error."})
+        } finally{
+            // client.close()
+            // console.log("DBS connection closed.")
+        }
     });
 })
 
@@ -90,7 +91,7 @@ app.post('/task/new', (req, res) => {
             'done': false,
             'date': new Date().toISOString(),
         };
-        
+
         client.connect((error) => {
             if (error) {
                 return console.log("Connection failed")
