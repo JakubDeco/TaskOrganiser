@@ -1,4 +1,8 @@
 
+*{
+    box-sizing: border-box;
+}
+
 body {
     font-family: monospace;
     font-size: 2rem;
@@ -29,13 +33,14 @@ body {
 
 .input {
     height: 1.5em;
+    width: fit-content;
     font-family: monospace;
     font-weight: 700;
 
 }
 
 .number-input {
-    width: 4em;
+    width: fit-content;
 }
 
 #btnAddTask {
@@ -48,22 +53,25 @@ body {
 
 #name-container {
     display: flex;
-    justify-content: space-around;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    width: 400px;
+    width: 100%;
     
     padding-top: 5px;
     
 }
 
 #priority-container {
-    width: fit-content;
+    width: 100%;
     display: flex;
-    justify-content: right;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
 }
 
 #time-container {
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
