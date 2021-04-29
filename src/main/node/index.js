@@ -1,4 +1,5 @@
 const express = require('express')
+const mongodb = require('mongodb')
 const { MongoClient } = require('mongodb')
 const url = require('url')
 
@@ -15,6 +16,14 @@ app.use(express.urlencoded({
     extended: true
 }))
 app.use(express.json())
+
+app.use(function (req,res,next){
+    res.setHeader('Access-Control-Allow-Origin','*')
+
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    next()
+})
 
 
 
@@ -60,9 +69,11 @@ app.get('', (req, res) => {
 })
 
 app.post('/task/new', (req, res) => {
+
+    res.setHeader('Access-Control-Allow-Origin','*');
+
     const body = req.body
-    // console.log("hello")
-    // console.log(new Date().toISOString())
+    
     if (typeof (body.name === "string")
         && typeof (body.timeEstimate === "number")
         && typeof (body.priority === "number")
@@ -71,6 +82,7 @@ app.post('/task/new', (req, res) => {
         && body.priority % 1 === 0
         && body.timeEstimate > 0) {
         //console.log('am here')
+
         const newTask = {
             'name': body.name,
             'priority': body.priority,
@@ -78,6 +90,7 @@ app.post('/task/new', (req, res) => {
             'done': false,
             'date': new Date().toISOString(),
         };
+        
         client.connect((error) => {
             if (error) {
                 return console.log("Connection failed")
@@ -101,15 +114,15 @@ app.patch('/task/done', (req, res) => {
         client.connect((error) => {
             if (error) {
                 console.log("Connection failed")
-                return res.status(500).send({ "error": "internal server error" })
+                res.status(500).send({ "error": "internal server error" })
             } else {
                 console.log('connection sucessfull')
 
-                const filter = { _id: id }
+                const filter = { _id: new mongodb.ObjectID(id) }
                 const update = { "$set": { "done": true } }
-                //const options = { returnNewDocument: true }
+                const options = { returnNewDocument: true }
 
-                client.db(dbsName).collection('task').findOneAndUpdate(filter, update, (err, result) => {
+                client.db(dbsName).collection('task').findOneAndUpdate(filter, update, options).toArray( (err, result) => {
                     if (err) {
                         res.status(400).send({ "error": "Task can not be changed." })
                     } else if (result.matchedCount == 0) {
