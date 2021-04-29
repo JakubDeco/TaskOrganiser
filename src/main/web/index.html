@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="form-container">
+
+        <div id="name-container">
+            <label for="name">Task name:</label>
+            <input type="text" class="input" id="name" name="name"><br>
+        </div>
+        <div id="priority-container">
+            <label for="priority">Priority:</label>
+            <input type="number" min="1" max="3" class="number-input input" id="priority" name="priority"><br>
+        </div>
+        <div id="time-container">
+            <label for="timeEstimate">Time estimate:</label>
+            <input type="number" step=".1" min="0" max="1000" class="number-input input" id="timeEstimate"
+                name="timeEstimate"><br>
+        </div>
+        <button id="btnAddTask">Add Task</button>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

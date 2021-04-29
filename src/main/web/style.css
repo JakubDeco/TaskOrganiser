@@ -1,0 +1,72 @@
+
+body {
+    font-family: monospace;
+    font-size: 2rem;
+    color: rgb(251, 252, 252);
+    margin: 0 auto;
+    background-color: hsla(204,12.449720506%,0%,0.77);
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+    align-items: center;
+
+    width: 400px;
+    height: 200px;
+    background-color: #202020 ;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -200px;
+    padding: 1rem;
+    border-radius: 1rem;
+
+}
+
+.input {
+    height: 1.5em;
+    font-family: monospace;
+    font-weight: 700;
+
+}
+
+.number-input {
+    width: 4em;
+}
+
+#btnAddTask {
+    margin-left: auto;
+    width: 7em;
+    height: 3em;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+#name-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 400px;
+    
+    padding-top: 5px;
+    
+}
+
+#priority-container {
+    width: fit-content;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+#time-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
