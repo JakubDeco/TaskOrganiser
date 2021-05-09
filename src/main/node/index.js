@@ -108,6 +108,9 @@ app.post('/task/new', (req, res) => {
 })
 
 app.patch('/task/done', (req, res) => {
+
+    res.setHeader('Access-Control-Allow-Origin','*');
+
     const id = req.query._id
     if (id != undefined) {
         // console.log(filter._id)
@@ -121,17 +124,17 @@ app.patch('/task/done', (req, res) => {
 
                 const filter = { _id: new mongodb.ObjectID(id) }
                 const update = { "$set": { "done": true } }
-                const options = { returnNewDocument: true }
+                // const options = { returnNewDocument: true }
 
-                client.db(dbsName).collection('task').findOneAndUpdate(filter, update, options).toArray( (err, result) => {
+                client.db(dbsName).collection('task').updateOne(filter, update, (err, result) => {
                     if (err) {
                         res.status(400).send({ "error": "Task can not be changed." })
                     } else if (result.matchedCount == 0) {
-                        console.log(result)
+                        //console.log(result)
                         res.status(404).send({ "info": "Task not found." })
                     } else {
-                        console.log(result)
-                        res.status(200).send({ "ok": "Task was set as completed." })
+                        //console.log(result)
+                        res.status(201).send({ "ok": "Task was set as completed." })
                     }
                 })
             }
