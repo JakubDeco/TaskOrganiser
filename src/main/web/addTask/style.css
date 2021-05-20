@@ -33,7 +33,7 @@ body {
 
 .input {
     height: 1.5em;
-    width: fit-content;
+    /* width: fit-content; */
     font-family: monospace;
     font-weight: 700;
 

@@ -18,13 +18,11 @@ app.use(express.urlencoded({
 }))
 app.use(express.json())
 
-app.use(function (req,res,next){
-    res.setHeader('Access-Control-Allow-Origin','*')
-
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    next()
-})
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    next();
+});
 
 
 
@@ -71,34 +69,33 @@ app.get('', (req, res) => {
 
 app.post('/task/new', (req, res) => {
 
-    res.setHeader('Access-Control-Allow-Origin','*');
-
     const body = req.body
     
     if (typeof (body.name === "string")
-        && typeof (body.timeEstimate === "number")
-        && typeof (body.priority === "number")
-        && body.priority < 4
+    && typeof (body.timeEstimate === "number")
+    && typeof (body.priority === "number")
+    &&  body.priority < 4
         && body.priority > 0
         && body.priority % 1 === 0
         && body.timeEstimate > 0) {
-        //console.log('am here')
-
-        const newTask = {
-            'name': body.name,
-            'priority': body.priority,
-            'timeEstimate': body.timeEstimate,
-            'done': false,
-            'date': new Date().toISOString(),
-        };
-
+            
+            const newTask = {
+                'name': body.name,
+                'priority': body.priority,
+                'timeEstimate': body.timeEstimate,
+                'done': false,
+                'date': new Date().toISOString(),
+            };
+            
+            //console.log('am here')
         client.connect((error) => {
             if (error) {
+                res.status(500).send({ 'error': 'Incorrect request body.' })
                 return console.log("Connection failed")
             } else {
                 console.log('connection sucessfull')
                 client.db(dbsName).collection('task').insertOne(newTask)
-                res.send(newTask)
+                res.status(201).send(newTask)
             }
         })
     } else {

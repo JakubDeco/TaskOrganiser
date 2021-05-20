@@ -1,23 +1,24 @@
 const btnAddTask = document.getElementById('btnAddTask')
 
 btnAddTask.addEventListener('click', () => {
-    const taskName = document.getElementById('name').value
+    const name = document.getElementById('name').value
     const priority = document.getElementById('priority').value
-    const timeEst = document.getElementById('timeEstimate').value
+    const timeEstimate = document.getElementById('timeEstimate').value
     
-    const newTask = {taskName, priority, timeEst}
+    const newTask = {name, priority, timeEstimate}
 
     $.ajax({
         url: "http://localhost:3000/task/new",
         type: "post",
-        dataType: "json",
-        contentType: "application/json",
+        dataType: "application/json",
         data: newTask,
-        success: (result) => {
-            console.log(result)
-        },
-        error: (err) => {
-            console.log("error occured: ", err)
+        statusCode: {
+            201: (result) => {
+                console.log(result.responseText)
+            },
+            500: (result) => {
+                console.log(result.responseText)
+            }
         }
     })
 })
