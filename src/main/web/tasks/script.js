@@ -47,10 +47,10 @@ btnAllTasks.addEventListener("click", () => {
 
                     let task;
                     if (done){
-                        task = 'ID: ' + _id + '</br>NAME: ' + name + `</br>Done: <span id="${_id}-done">${done}</span>`
+                        task = 'NAME: ' + name + `</br>DONE: <span id="${_id}-done">${done}</span>`
                         + '</br>PRIORITY: ' + priority + ' ... ' + timeEstimate + 'h'
                     }else{
-                        task = 'ID: ' + _id + '</br>NAME: ' + name + `</br>Done: <span id="${_id}-done">${done}</span>`
+                        task = 'NAME: ' + name + `</br>DONE: <span id="${_id}-done">${done}</span>`
                             +` <button class="complete-u" onClick="complete(this)" value="${_id}">complete</button>`+ '</br>PRIORITY: ' + priority + ' ... ' + timeEstimate + 'h'
                         }
                         //console.log(task)
@@ -65,6 +65,3 @@ btnAllTasks.addEventListener("click", () => {
     })
 })
 
-// uComplete.addEventListener("click", () => {
-//     complete()
-// })
