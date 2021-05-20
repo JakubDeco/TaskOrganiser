@@ -18,33 +18,28 @@ body {
     justify-content: space-between;
     align-items: center;
 
-    width: 400px;
+    width: 500px;
     height: 200px;
     background-color: #202020 ;
     position: fixed;
     top: 50%;
     left: 50%;
     margin-top: -100px;
-    margin-left: -200px;
+    margin-left: -250px;
     padding: 1rem;
     border-radius: 1rem;
 
 }
 
 .input {
-    height: 1.5em;
-    /* width: fit-content; */
+    font-size: 21px;
     font-family: monospace;
     font-weight: 700;
-
-}
-
-.number-input {
-    width: fit-content;
+    width: 200px;
+    margin-left: auto;
 }
 
 #btnAddTask {
-    margin-left: auto;
     width: 7em;
     height: 3em;
     font-size: 14px;
@@ -52,11 +47,11 @@ body {
 }
 
 #name-container {
+    width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
-    width: 100%;
     
     padding-top: 5px;
     
